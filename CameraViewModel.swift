@@ -10,6 +10,7 @@ import SwiftUI
 import AVFoundation
 import Vision
 
+@MainActor
 final class CameraViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
 
     // MARK: - Published
@@ -20,7 +21,7 @@ final class CameraViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutpu
 
     // MARK: - Camera
     let session = AVCaptureSession()
-    private let estimator = PoseEstimator()
+    nonisolated(unsafe) let estimator = PoseEstimator()
 
     // MARK: - Start Camera
     func start() {
@@ -54,14 +55,17 @@ final class CameraViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutpu
     }
 
     // MARK: - Capture Delegate
-    func captureOutput(_ output: AVCaptureOutput,
+    nonisolated func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
 
         estimator.process(sampleBuffer: sampleBuffer) { [weak self] detected in
             DispatchQueue.main.async {
-                self?.joints = detected
-                self?.checkPose()
+                Task { @MainActor [weak self] in
+                    self?.joints = detected
+                    self?.checkPose()
+                }
+                
             }
         }
     }

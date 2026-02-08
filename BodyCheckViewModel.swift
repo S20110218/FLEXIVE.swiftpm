@@ -25,7 +25,7 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
     private let videoOutput = AVCaptureVideoDataOutput()
     
     // Vision リクエストを再利用
-    private let poseRequest = VNDetectHumanBodyPoseRequest()
+    nonisolated(unsafe) private let poseRequest = VNDetectHumanBodyPoseRequest()
 
     override init() {
         super.init()
