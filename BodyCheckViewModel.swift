@@ -23,6 +23,10 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
     // ===== Camera =====
     let captureSession = AVCaptureSession()
     private let videoOutput = AVCaptureVideoDataOutput()
+    
+    // フレームスキップ用（パフォーマンス改善）
+    private var frameCount = 0
+    private let processEveryNFrames = 2 // 2フレームに1回処理
 
     override init() {
         super.init()
@@ -66,15 +70,18 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
             captureSession.addInput(input)
         }
 
-        // Video Output
+        // Video Output（最適化）
         videoOutput.videoSettings = [
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
         ]
+        
+        // フレームレートを制限してパフォーマンス向上
+        videoOutput.alwaysDiscardsLateVideoFrames = true
 
         // ★ Delegate はバックグラウンドキュー
         videoOutput.setSampleBufferDelegate(
             self,
-            queue: DispatchQueue(label: "BodyCheckVideoQueue")
+            queue: DispatchQueue(label: "BodyCheckVideoQueue", qos: .userInitiated)
         )
 
         if captureSession.canAddOutput(videoOutput) {
@@ -86,58 +93,78 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
 
     // MARK: - Capture Delegate
     
-    // Sendableな構造体を作る
+    // Sendableな構造体
     struct JointData: Sendable {
         let name: VNHumanBodyPoseObservation.JointName
         let location: CGPoint
         let confidence: Float
     }
 
-
     nonisolated func captureOutput(_ output: AVCaptureOutput,
                                    didOutput sampleBuffer: CMSampleBuffer,
                                    from connection: AVCaptureConnection) {
 
+        // フレームスキップでパフォーマンス改善
+        let currentFrame = self.incrementFrameCount()
+        guard currentFrame % self.processEveryNFrames == 0 else { return }
+        
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
 
         let request = VNDetectHumanBodyPoseRequest()
-        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
-                                            orientation: .up,
-                                            options: [:])
+        request.revision = VNDetectHumanBodyPoseRequestRevision1
+        
+        let handler = VNImageRequestHandler(
+            cvPixelBuffer: pixelBuffer,
+            orientation: .up,
+            options: [:]
+        )
 
         try? handler.perform([request])
         guard let observation = request.results?.first else { return }
 
-        // ★ Sendableに変換
+        // ★ Sendableに変換（必要な関節のみ）
+        let requiredJoints: Set<VNHumanBodyPoseObservation.JointName> = [
+            .nose, .leftWrist, .rightWrist, .leftAnkle, .rightAnkle,
+            .leftShoulder, .rightShoulder, .leftElbow, .rightElbow,
+            .leftHip, .rightHip, .leftKnee, .rightKnee
+        ]
+        
         let joints: [JointData] = observation.availableJointNames.compactMap { jointName in
-            guard let point = try? observation.recognizedPoint(jointName) else { return nil }
-            return JointData(name: jointName,
-                             location: point.location,
-                             confidence: point.confidence)
+            guard requiredJoints.contains(jointName),
+                  let point = try? observation.recognizedPoint(jointName),
+                  point.confidence > 0.3 else { return nil }
+            return JointData(
+                name: jointName,
+                location: point.location,
+                confidence: point.confidence
+            )
         }
 
         Task { @MainActor [weak self] in
             self?.applyObservationResult(joints: joints)
         }
     }
-
+    
+    private nonisolated func incrementFrameCount() -> Int {
+        // スレッドセーフなカウンター
+        OSAtomicIncrement32Barrier(&unsafeBitCast(self, to: UnsafeMutablePointer<Int32>.self).pointee)
+        return Int(unsafeBitCast(self, to: UnsafePointer<Int32>.self).pointee)
+    }
 
     // MARK: - Pose Processing
     private func applyObservationResult(joints: [JointData]) {
 
-        // ===== 骨格描画用 =====
+        // ===== 骨格描画用（辞書を一度だけ作成）=====
         currentJoints = Dictionary(uniqueKeysWithValues:
             joints.map { ($0.name, $0.location) }
         )
 
-        // ===== 検出済みJoint =====
-        let detectedJoints = joints
-            .filter { $0.confidence > 0.3 }
-            .map { $0.name }
+        // ===== 検出済みJoint（Set で高速化）=====
+        let detectedJointNames = Set(joints.map { $0.name })
 
         // ===== チェック更新 =====
         for index in checkItems.indices {
-            if detectedJoints.contains(checkItems[index].joint) {
+            if detectedJointNames.contains(checkItems[index].joint) {
                 checkItems[index].isDetected = true
             }
         }
@@ -146,6 +173,4 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
         completionPercentage = Double(detectedCount) / Double(checkItems.count) * 100
         isComplete = detectedCount == checkItems.count
     }
-
-
 }

@@ -11,73 +11,126 @@ struct CameraPreviewView: UIViewRepresentable {
         Coordinator()
     }
 
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView()
-        view.backgroundColor = .clear   // ← 実は clear より安全
+    func makeUIView(context: Context) -> PreviewContainerView {
+        let view = PreviewContainerView()
+        view.backgroundColor = .black
 
-        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        previewLayer.videoGravity = .resizeAspectFill
-        previewLayer.connection?.videoOrientation = .landscapeRight
+        view.previewLayer.session = session
+        view.previewLayer.videoGravity = .resizeAspectFill
+        view.previewLayer.connection?.videoOrientation = .landscapeRight
 
-        let skeletonLayer = CAShapeLayer()
-        skeletonLayer.strokeColor = UIColor.green.cgColor
-        skeletonLayer.lineWidth = 3
-        skeletonLayer.fillColor = UIColor.clear.cgColor
-
-        view.layer.addSublayer(previewLayer)
-        view.layer.addSublayer(skeletonLayer)
-
-        context.coordinator.previewLayer = previewLayer
-        context.coordinator.skeletonLayer = skeletonLayer
+        context.coordinator.previewLayer = view.previewLayer
+        context.coordinator.skeletonLayer = view.skeletonLayer
+        context.coordinator.containerView = view
 
         return view
     }
 
-    func updateUIView(_ uiView: UIView, context: Context) {
-        guard let previewLayer = context.coordinator.previewLayer,
-              let skeletonLayer = context.coordinator.skeletonLayer
-        else { return }
-
-        // 🔥 ここがないと映らない
-        previewLayer.frame = uiView.bounds
-        skeletonLayer.frame = uiView.bounds
-
-        // ===== skeleton 描画 =====
-        let path = UIBezierPath()
-
-        func p(_ joint: VNHumanBodyPoseObservation.JointName) -> CGPoint? {
-            guard let pt = viewModel.currentJoints[joint] else { return nil }
-
-            return CGPoint(
-                x: pt.x * uiView.bounds.width,
-                y: (1 - pt.y) * uiView.bounds.height
-            )
-        }
-
-
-        func line(_ a: VNHumanBodyPoseObservation.JointName,
-                  _ b: VNHumanBodyPoseObservation.JointName) {
-            guard let p1 = p(a), let p2 = p(b) else { return }
-            path.move(to: p1)
-            path.addLine(to: p2)
-        }
-
-        // hi
-        line(.leftShoulder, .leftElbow)
-        line(.leftElbow, .leftWrist)
-        line(.rightShoulder, .rightElbow)
-        line(.rightElbow, .rightWrist)
-        line(.leftHip, .leftKnee)
-        line(.leftKnee, .leftAnkle)
-        line(.rightHip, .rightKnee)
-        line(.rightKnee, .rightAnkle)
-
-        skeletonLayer.path = path.cgPath
+    func updateUIView(_ uiView: PreviewContainerView, context: Context) {
+        // スケルトン描画を最適化
+        context.coordinator.updateSkeleton(with: viewModel.currentJoints)
     }
 
     class Coordinator {
         var previewLayer: AVCaptureVideoPreviewLayer?
         var skeletonLayer: CAShapeLayer?
+        weak var containerView: PreviewContainerView?
+        
+        // 座標変換をキャッシュ
+        private var lastBounds: CGRect = .zero
+        
+        func updateSkeleton(with joints: [VNHumanBodyPoseObservation.JointName : CGPoint]) {
+            guard let skeletonLayer = skeletonLayer,
+                  let view = containerView else { return }
+            
+            let bounds = view.bounds
+            
+            // 空のjointsの場合は早期リターン
+            guard !joints.isEmpty else {
+                skeletonLayer.path = nil
+                return
+            }
+            
+            // 座標変換関数（最適化版）
+            func transformPoint(_ joint: VNHumanBodyPoseObservation.JointName) -> CGPoint? {
+                guard let pt = joints[joint] else { return nil }
+                return CGPoint(
+                    x: pt.x * bounds.width,
+                    y: (1 - pt.y) * bounds.height
+                )
+            }
+            
+            // パスを作成
+            let path = UIBezierPath()
+            
+            // 線を描画するヘルパー関数
+            func drawLine(from a: VNHumanBodyPoseObservation.JointName,
+                         to b: VNHumanBodyPoseObservation.JointName) {
+                guard let p1 = transformPoint(a),
+                      let p2 = transformPoint(b) else { return }
+                path.move(to: p1)
+                path.addLine(to: p2)
+            }
+            
+            // 左腕
+            drawLine(from: .leftShoulder, to: .leftElbow)
+            drawLine(from: .leftElbow, to: .leftWrist)
+            
+            // 右腕
+            drawLine(from: .rightShoulder, to: .rightElbow)
+            drawLine(from: .rightElbow, to: .rightWrist)
+            
+            // 体幹
+            drawLine(from: .leftShoulder, to: .rightShoulder)
+            drawLine(from: .leftShoulder, to: .leftHip)
+            drawLine(from: .rightShoulder, to: .rightHip)
+            drawLine(from: .leftHip, to: .rightHip)
+            
+            // 左脚
+            drawLine(from: .leftHip, to: .leftKnee)
+            drawLine(from: .leftKnee, to: .leftAnkle)
+            
+            // 右脚
+            drawLine(from: .rightHip, to: .rightKnee)
+            drawLine(from: .rightKnee, to: .rightAnkle)
+            
+            // パスを設定（アニメーション無し）
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+            skeletonLayer.path = path.cgPath
+            CATransaction.commit()
+        }
     }
 }
 
+final class PreviewContainerView: UIView {
+    let previewLayer = AVCaptureVideoPreviewLayer()
+    let skeletonLayer = CAShapeLayer()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        // プレビューレイヤーの設定
+        previewLayer.backgroundColor = UIColor.black.cgColor
+        
+        // スケルトンレイヤーの設定（最適化）
+        skeletonLayer.strokeColor = UIColor.green.cgColor
+        skeletonLayer.lineWidth = 4
+        skeletonLayer.fillColor = UIColor.clear.cgColor
+        skeletonLayer.lineCap = .round
+        skeletonLayer.lineJoin = .round
+        
+        layer.addSublayer(previewLayer)
+        layer.addSublayer(skeletonLayer)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewLayer.frame = bounds
+        skeletonLayer.frame = bounds
+    }
+}
