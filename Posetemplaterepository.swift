@@ -1,12 +1,12 @@
 import Vision
 import CoreGraphics
 
-final class PoseTemplateRepository {
+final class PoseTemplateRepository: @unchecked Sendable {
 
     static let shared = PoseTemplateRepository()
 
     private init() {}
-    Static
+
     func random() -> PoseTemplate {
         templates.randomElement()!
     }

@@ -1,7 +1,7 @@
 import Vision
 import CoreGraphics
 
-struct PoseTemplate {
+struct PoseTemplate: Sendable {
     let name: String
     let joints: [VNHumanBodyPoseObservation.JointName: CGPoint]
 }

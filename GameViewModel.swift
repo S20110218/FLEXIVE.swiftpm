@@ -1,76 +1,85 @@
-import SwiftUI
+import Foundation
 import AVFoundation
 import Vision
 
-final class CameraViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+@MainActor
+class GameViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
 
-    // MARK: - Published
-    @Published var joints: [VNHumanBodyPoseObservation.JointName: CGPoint] = [:]
-    @Published var template: PoseTemplate = PoseTemplateRepository.shared.random()
-    @Published var showResult: Bool = false
-    @Published var point: Int = 0
+    @Published var poseTimeRemaining: Double = 10
+    @Published var gameEnded = false
+    @Published var lastPoseCleared = false
+
+    let captureSession = AVCaptureSession()
+    private let videoOutput = AVCaptureVideoDataOutput()
+    private var totalTimer: Timer?
+    private var poseTimer: Timer?
+
+    override init() {
+        super.init()
+        setupCamera()
+    }
+
+    // MARK: - Game Control
+
+    func startGame() {
+        captureSession.startRunning()
+        startTimers()
+        selectRandomPose()
+    }
+
+    func stopGame() {
+        captureSession.stopRunning()
+        totalTimer?.invalidate()
+        poseTimer?.invalidate()
+        gameEnded = true
+    }
+
+    func resetGame() {
+        poseTimeRemaining = 10
+        gameEnded = false
+        lastPoseCleared = false
+        startGame()
+    }
 
     // MARK: - Camera
-    let session = AVCaptureSession()
-    private let estimator = PoseEstimator()
 
-    // MARK: - Start Camera
-    func start() {
-        session.beginConfiguration()
+    private func setupCamera() {
+        captureSession.sessionPreset = .high
 
-        // 内カメラ（フロントカメラ）
-        guard
-            let device = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                 for: .video,
-                                                 position: .front),
-            let input = try? AVCaptureDeviceInput(device: device)
-        else { return }
+        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                   for: .video,
+                                                   position: .front),
+              let input = try? AVCaptureDeviceInput(device: camera),
+              captureSession.canAddInput(input) else { return }
 
-        if session.canAddInput(input) {
-            session.addInput(input)
-        }
+        captureSession.addInput(input)
 
-        let output = AVCaptureVideoDataOutput()
-        output.setSampleBufferDelegate(self, queue: DispatchQueue(label: "camera.queue"))
-
-        if session.canAddOutput(output) {
-            session.addOutput(output)
-        }
-
-        session.commitConfiguration()
-        
-        // セッション開始
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.session.startRunning()
+        if captureSession.canAddOutput(videoOutput) {
+            captureSession.addOutput(videoOutput)
         }
     }
 
-    // MARK: - Capture Delegate
-    func captureOutput(_ output: AVCaptureOutput,
-                       didOutput sampleBuffer: CMSampleBuffer,
-                       from connection: AVCaptureConnection) {
+    // MARK: - Timer
 
-        estimator.process(sampleBuffer: sampleBuffer) { [weak self] detected in
-            DispatchQueue.main.async {
-                self?.joints = detected
-                self?.checkPose()
+    private func startTimers() {
+        poseTimer?.invalidate()
+
+        poseTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self else { return }
+
+            self.poseTimeRemaining -= 1
+
+            if self.poseTimeRemaining <= 0 {
+                self.poseTimeRemaining = 10
+                self.selectRandomPose()
             }
         }
     }
 
-    // MARK: - Pose Check
-    private func checkPose() {
-        let score = estimator.score(current: joints, target: template.joints)
+    // MARK: - Pose
 
-        if score > 0.8 {
-            point = Int(score * 100)
-            showResult = true
-        }
-    }
-
-    // MARK: - Next Pose
-    func nextPose() {
-        template = PoseTemplateRepository.shared.random()
-        showResult = false
+    private func selectRandomPose() {
+        // 仮の処理（あとでポーズロジック追加）
+        lastPoseCleared.toggle()
     }
 }
