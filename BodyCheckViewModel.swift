@@ -24,12 +24,12 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
     let captureSession = AVCaptureSession()
     private let videoOutput = AVCaptureVideoDataOutput()
     
-    // フレームスキップ用（パフォーマンス改善）
-    private var frameCount = 0
-    private let processEveryNFrames = 2 // 2フレームに1回処理
+    // Vision リクエストを再利用
+    private let poseRequest = VNDetectHumanBodyPoseRequest()
 
     override init() {
         super.init()
+        poseRequest.revision = VNDetectHumanBodyPoseRequestRevision1
         setupCamera()
     }
 
@@ -55,7 +55,7 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
         captureSession.beginConfiguration()
         captureSession.sessionPreset = .high
 
-        // フロントカメラ
+        // フロントカメラ（内カメラ）
         guard
             let camera = AVCaptureDevice.default(.builtInWideAngleCamera,
                                                  for: .video,
@@ -75,14 +75,12 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
         ]
         
-        // フレームレートを制限してパフォーマンス向上
+        // 遅延フレームを破棄
         videoOutput.alwaysDiscardsLateVideoFrames = true
 
-        // ★ Delegate はバックグラウンドキュー
-        videoOutput.setSampleBufferDelegate(
-            self,
-            queue: DispatchQueue(label: "BodyCheckVideoQueue", qos: .userInitiated)
-        )
+        // ★ 高優先度キューで処理
+        let videoQueue = DispatchQueue(label: "BodyCheckVideoQueue", qos: .userInteractive)
+        videoOutput.setSampleBufferDelegate(self, queue: videoQueue)
 
         if captureSession.canAddOutput(videoOutput) {
             captureSession.addOutput(videoOutput)
@@ -104,35 +102,24 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
                                    didOutput sampleBuffer: CMSampleBuffer,
                                    from connection: AVCaptureConnection) {
 
-        // フレームスキップでパフォーマンス改善
-        let currentFrame = self.incrementFrameCount()
-        guard currentFrame % self.processEveryNFrames == 0 else { return }
-        
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
 
-        let request = VNDetectHumanBodyPoseRequest()
-        request.revision = VNDetectHumanBodyPoseRequestRevision1
-        
+        // リクエストハンドラーを作成（内カメラの縦向きに対応）
         let handler = VNImageRequestHandler(
             cvPixelBuffer: pixelBuffer,
-            orientation: .up,
+            orientation: .leftMirrored,  // 内カメラ縦向き用
             options: [:]
         )
 
-        try? handler.perform([request])
-        guard let observation = request.results?.first else { return }
-
-        // ★ Sendableに変換（必要な関節のみ）
-        let requiredJoints: Set<VNHumanBodyPoseObservation.JointName> = [
-            .nose, .leftWrist, .rightWrist, .leftAnkle, .rightAnkle,
-            .leftShoulder, .rightShoulder, .leftElbow, .rightElbow,
-            .leftHip, .rightHip, .leftKnee, .rightKnee
-        ]
+        // リクエストを実行
+        try? handler.perform([self.poseRequest])
         
+        guard let observation = self.poseRequest.results?.first else { return }
+
+        // ★ 全ての検出可能な関節を取得
         let joints: [JointData] = observation.availableJointNames.compactMap { jointName in
-            guard requiredJoints.contains(jointName),
-                  let point = try? observation.recognizedPoint(jointName),
-                  point.confidence > 0.3 else { return nil }
+            guard let point = try? observation.recognizedPoint(jointName),
+                  point.confidence > 0.2 else { return nil }
             return JointData(
                 name: jointName,
                 location: point.location,
@@ -140,24 +127,22 @@ class BodyCheckViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
             )
         }
 
+        // メインスレッドで即座に更新
         Task { @MainActor [weak self] in
             self?.applyObservationResult(joints: joints)
         }
-    }
-    
-    private nonisolated func incrementFrameCount() -> Int {
-        // スレッドセーフなカウンター
-        OSAtomicIncrement32Barrier(&unsafeBitCast(self, to: UnsafeMutablePointer<Int32>.self).pointee)
-        return Int(unsafeBitCast(self, to: UnsafePointer<Int32>.self).pointee)
     }
 
     // MARK: - Pose Processing
     private func applyObservationResult(joints: [JointData]) {
 
         // ===== 骨格描画用（辞書を一度だけ作成）=====
-        currentJoints = Dictionary(uniqueKeysWithValues:
+        let newJoints = Dictionary(uniqueKeysWithValues:
             joints.map { ($0.name, $0.location) }
         )
+        
+        // 即座に更新
+        self.currentJoints = newJoints
 
         // ===== 検出済みJoint（Set で高速化）=====
         let detectedJointNames = Set(joints.map { $0.name })

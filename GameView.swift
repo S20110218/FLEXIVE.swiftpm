@@ -1,61 +1,28 @@
 import SwiftUI
 
-struct GameView: View {
-    
-    @StateObject private var viewModel = GameViewModel()
-    @Environment(\.dismiss) private var dismiss
+struct CameraView: View {
+    @StateObject private var vm = CameraViewModel()
     
     var body: some View {
-        VStack(spacing: 24) {
+        ZStack {
+            // カメラプレビュー（背景）
+            CameraPreview(session: vm.session)
+                .edgesIgnoringSafeArea(.all)
             
-            // ポーズカード
-            VStack(spacing: 16) {
-                
-                Text("MODEL")
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.7))
-                
-                RoundedRectangle(cornerRadius: 24)
-                    .fill(
-                        LinearGradient(
-                            colors: [.purple.opacity(0.7), .blue.opacity(0.7)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 200, height: 260)
-                    .overlay(
-                        Text(viewModel.currentPose.rawValue)
-                            .font(.title.bold())
-                            .foregroundColor(.white)
-                    )
-                
-                Text("Score: \(viewModel.totalScore)")
-                    .foregroundColor(.white)
-                
-                Text("Clear: \(viewModel.clearCount)")
-                    .foregroundColor(.white.opacity(0.8))
+            // 検出された体のスケルトン（緑色）
+            SkeletonOverlayView(joints: vm.joints, color: .green)
+                .edgesIgnoringSafeArea(.all)
+            
+            // ターゲットポーズのスケルトン（青色・半透明）
+            SkeletonOverlayView(joints: vm.template.joints, color: .blue.opacity(0.5))
+                .frame(width: 300, height: 500)
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
+        }
+        .onAppear { vm.start() }
+        .fullScreenCover(isPresented: $vm.showResult) {
+            ResultView(point: vm.point) {
+                vm.nextPose()
             }
-            .padding()
-            .background(Color.black.opacity(0.4))
-            .cornerRadius(24)
-            
-            Spacer()
-            
-            // ボタン
-            HStack(spacing: 16) {
-                Button("START") { viewModel.startGame() }
-                    .buttonStyle(.borderedProminent)
-                
-                Button("STOP") { viewModel.stopGame() }
-                    .buttonStyle(.bordered)
-                
-                Button("RESET") { viewModel.resetGame() }
-                    .buttonStyle(.bordered)
-            }
-            
-            Button("BACK") { dismiss() }
-                .padding(.top, 8)
         }
     }
 }

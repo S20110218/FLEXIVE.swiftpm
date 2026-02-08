@@ -1,89 +1,76 @@
-import Foundation
+import SwiftUI
 import AVFoundation
+import Vision
 
-@MainActor
-class GameViewModel: NSObject, ObservableObject {
-
-    // MARK: - Pose
-    enum PoseType: String, CaseIterable {
-        case tPose = "T-POSE"
-        case handsUp = "HANDS UP"
-        case squat = "SQUAT"
-    }
+final class CameraViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
 
     // MARK: - Published
-    @Published var currentPose: PoseType = .tPose
-    @Published var totalScore: Int = 0
-    @Published var clearCount: Int = 0
-    @Published var poseTimeRemaining: Double = 10
-    @Published var gameEnded: Bool = false
+    @Published var joints: [VNHumanBodyPoseObservation.JointName: CGPoint] = [:]
+    @Published var template: PoseTemplate = PoseTemplateRepository.shared.random()
+    @Published var showResult: Bool = false
+    @Published var point: Int = 0
 
     // MARK: - Camera
-    let captureSession = AVCaptureSession()
+    let session = AVCaptureSession()
+    private let estimator = PoseEstimator()
 
-    // MARK: - Timer
-    private var poseTimer: Timer?
+    // MARK: - Start Camera
+    func start() {
+        session.beginConfiguration()
 
-    // MARK: - Init
-    override init() {
-        super.init()
-        setupCamera()
+        // 内カメラ（フロントカメラ）
+        guard
+            let device = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                 for: .video,
+                                                 position: .front),
+            let input = try? AVCaptureDeviceInput(device: device)
+        else { return }
+
+        if session.canAddInput(input) {
+            session.addInput(input)
+        }
+
+        let output = AVCaptureVideoDataOutput()
+        output.setSampleBufferDelegate(self, queue: DispatchQueue(label: "camera.queue"))
+
+        if session.canAddOutput(output) {
+            session.addOutput(output)
+        }
+
+        session.commitConfiguration()
+        
+        // セッション開始
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.session.startRunning()
+        }
     }
 
-    // MARK: - Game Control
-    func startGame() {
-        captureSession.startRunning()
-        startPoseTimer()
-        selectRandomPose()
-    }
+    // MARK: - Capture Delegate
+    func captureOutput(_ output: AVCaptureOutput,
+                       didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
 
-    func stopGame() {
-        captureSession.stopRunning()
-        poseTimer?.invalidate()
-        gameEnded = true
-    }
-
-    func resetGame() {
-        totalScore = 0
-        clearCount = 0
-        poseTimeRemaining = 10
-        gameEnded = false
-        startGame()
-    }
-
-    // MARK: - Camera Setup
-    private func setupCamera() {
-        captureSession.sessionPreset = .high
-
-        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                   for: .video,
-                                                   position: .front),
-              let input = try? AVCaptureDeviceInput(device: camera),
-              captureSession.canAddInput(input) else { return }
-
-        captureSession.addInput(input)
-    }
-
-    // MARK: - Timer
-    private func startPoseTimer() {
-        poseTimer?.invalidate()
-
-        poseTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self else { return }
-
-            self.poseTimeRemaining -= 1
-
-            if self.poseTimeRemaining <= 0 {
-                self.poseTimeRemaining = 10
-                self.totalScore += 10
-                self.clearCount += 1
-                self.selectRandomPose()
+        estimator.process(sampleBuffer: sampleBuffer) { [weak self] detected in
+            DispatchQueue.main.async {
+                self?.joints = detected
+                self?.checkPose()
             }
         }
     }
 
-    // MARK: - Pose Logic
-    private func selectRandomPose() {
-        currentPose = PoseType.allCases.randomElement() ?? .tPose
+    // MARK: - Pose Check
+    private func checkPose() {
+        let score = estimator.score(current: joints, target: template.joints)
+
+        if score > 0.8 {
+            point = Int(score * 100)
+            showResult = true
+        }
+    }
+
+    // MARK: - Next Pose
+    func nextPose() {
+        template = PoseTemplateRepository.shared.random()
+        showResult = false
     }
 }

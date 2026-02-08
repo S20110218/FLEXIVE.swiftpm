@@ -6,4 +6,3 @@ struct PoseCheckItem: Identifiable {
     let joint: VNHumanBodyPoseObservation.JointName
     var isDetected: Bool = false
 }
-

@@ -17,7 +17,8 @@ struct CameraPreviewView: UIViewRepresentable {
 
         view.previewLayer.session = session
         view.previewLayer.videoGravity = .resizeAspectFill
-        view.previewLayer.connection?.videoOrientation = .landscapeRight
+        // 縦向き（ポートレート）に設定
+        view.previewLayer.connection?.videoOrientation = .portrait
 
         context.coordinator.previewLayer = view.previewLayer
         context.coordinator.skeletonLayer = view.skeletonLayer
@@ -27,8 +28,8 @@ struct CameraPreviewView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: PreviewContainerView, context: Context) {
-        // スケルトン描画を最適化
-        context.coordinator.updateSkeleton(with: viewModel.currentJoints)
+        // スケルトン描画を即座に更新
+        context.coordinator.updateSkeleton(with: viewModel.currentJoints, bounds: uiView.bounds)
     }
 
     class Coordinator {
@@ -36,14 +37,8 @@ struct CameraPreviewView: UIViewRepresentable {
         var skeletonLayer: CAShapeLayer?
         weak var containerView: PreviewContainerView?
         
-        // 座標変換をキャッシュ
-        private var lastBounds: CGRect = .zero
-        
-        func updateSkeleton(with joints: [VNHumanBodyPoseObservation.JointName : CGPoint]) {
-            guard let skeletonLayer = skeletonLayer,
-                  let view = containerView else { return }
-            
-            let bounds = view.bounds
+        func updateSkeleton(with joints: [VNHumanBodyPoseObservation.JointName : CGPoint], bounds: CGRect) {
+            guard let skeletonLayer = skeletonLayer else { return }
             
             // 空のjointsの場合は早期リターン
             guard !joints.isEmpty else {
@@ -51,9 +46,10 @@ struct CameraPreviewView: UIViewRepresentable {
                 return
             }
             
-            // 座標変換関数（最適化版）
+            // 座標変換関数（内カメラ縦向き用）
             func transformPoint(_ joint: VNHumanBodyPoseObservation.JointName) -> CGPoint? {
                 guard let pt = joints[joint] else { return nil }
+                // Vision座標系からUIKit座標系に変換（内カメラ縦向き）
                 return CGPoint(
                     x: pt.x * bounds.width,
                     y: (1 - pt.y) * bounds.height
@@ -63,6 +59,13 @@ struct CameraPreviewView: UIViewRepresentable {
             // パスを作成
             let path = UIBezierPath()
             
+            // 関節を描画する関数
+            func drawJoint(_ joint: VNHumanBodyPoseObservation.JointName, radius: CGFloat = 8) {
+                guard let point = transformPoint(joint) else { return }
+                path.move(to: CGPoint(x: point.x + radius, y: point.y))
+                path.addArc(withCenter: point, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)
+            }
+            
             // 線を描画するヘルパー関数
             func drawLine(from a: VNHumanBodyPoseObservation.JointName,
                          to b: VNHumanBodyPoseObservation.JointName) {
@@ -71,6 +74,8 @@ struct CameraPreviewView: UIViewRepresentable {
                 path.move(to: p1)
                 path.addLine(to: p2)
             }
+            
+            // === 骨格の線を描画 ===
             
             // 左腕
             drawLine(from: .leftShoulder, to: .leftElbow)
@@ -86,6 +91,9 @@ struct CameraPreviewView: UIViewRepresentable {
             drawLine(from: .rightShoulder, to: .rightHip)
             drawLine(from: .leftHip, to: .rightHip)
             
+            // 首・頭
+            drawLine(from: .neck, to: .nose)
+            
             // 左脚
             drawLine(from: .leftHip, to: .leftKnee)
             drawLine(from: .leftKnee, to: .leftAnkle)
@@ -94,7 +102,23 @@ struct CameraPreviewView: UIViewRepresentable {
             drawLine(from: .rightHip, to: .rightKnee)
             drawLine(from: .rightKnee, to: .rightAnkle)
             
-            // パスを設定（アニメーション無し）
+            // === 関節の円を描画 ===
+            drawJoint(.nose)
+            drawJoint(.neck)
+            drawJoint(.leftShoulder)
+            drawJoint(.rightShoulder)
+            drawJoint(.leftElbow)
+            drawJoint(.rightElbow)
+            drawJoint(.leftWrist)
+            drawJoint(.rightWrist)
+            drawJoint(.leftHip)
+            drawJoint(.rightHip)
+            drawJoint(.leftKnee)
+            drawJoint(.rightKnee)
+            drawJoint(.leftAnkle)
+            drawJoint(.rightAnkle)
+            
+            // パスを即座に設定（アニメーション無し）
             CATransaction.begin()
             CATransaction.setDisableActions(true)
             skeletonLayer.path = path.cgPath
@@ -113,10 +137,10 @@ final class PreviewContainerView: UIView {
         // プレビューレイヤーの設定
         previewLayer.backgroundColor = UIColor.black.cgColor
         
-        // スケルトンレイヤーの設定（最適化）
-        skeletonLayer.strokeColor = UIColor.green.cgColor
-        skeletonLayer.lineWidth = 4
-        skeletonLayer.fillColor = UIColor.clear.cgColor
+        // スケルトンレイヤーの設定
+        skeletonLayer.strokeColor = UIColor.systemGreen.withAlphaComponent(0.9).cgColor
+        skeletonLayer.lineWidth = 5
+        skeletonLayer.fillColor = UIColor.systemGreen.withAlphaComponent(0.4).cgColor
         skeletonLayer.lineCap = .round
         skeletonLayer.lineJoin = .round
         
