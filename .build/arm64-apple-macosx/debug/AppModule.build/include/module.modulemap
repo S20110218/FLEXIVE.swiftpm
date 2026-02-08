@@ -1,0 +1,3 @@
+module AppModule {
+    header "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/include/AppModule-Swift.h"
+}

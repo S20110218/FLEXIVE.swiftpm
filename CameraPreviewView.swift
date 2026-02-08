@@ -156,5 +156,9 @@ final class PreviewContainerView: UIView {
         super.layoutSubviews()
         previewLayer.frame = bounds
         skeletonLayer.frame = bounds
+        
+        if let connection = previewLayer.connection, connection.isVideoOrientationSupported {
+            connection.videoOrientation = .portrait
+        }
     }
 }

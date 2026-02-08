@@ -10,8 +10,12 @@ struct CameraPreview: UIViewRepresentable {
         
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
         previewLayer.videoGravity = .resizeAspectFill
-        // 縦向き（ポートレート）に設定
+        // 縦向き（ポートレート）に設定（接続確立後に再設定）
         previewLayer.connection?.videoOrientation = .portrait
+//        if let connection = previewLayer.connection, connection.isVideoMirroringSupported {
+//            connection.automaticallyAdjustsVideoMirroring = false
+//            connection.isVideoMirrored = true
+//        }
         
         view.layer.addSublayer(previewLayer)
         
@@ -31,6 +35,15 @@ struct CameraPreview: UIViewRepresentable {
         if let previewLayer = context.coordinator.previewLayer {
             DispatchQueue.main.async {
                 previewLayer.frame = uiView.bounds
+                if let connection = previewLayer.connection {
+                    if connection.isVideoOrientationSupported {
+                        connection.videoOrientation = .portrait
+                    }
+                    if connection.isVideoMirroringSupported {
+                        connection.automaticallyAdjustsVideoMirroring = false
+                        connection.isVideoMirrored = true
+                    }
+                }
             }
         }
     }

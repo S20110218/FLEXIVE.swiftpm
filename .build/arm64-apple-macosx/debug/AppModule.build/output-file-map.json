@@ -1,0 +1,201 @@
+{
+  "": {
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/master.swiftdeps"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/BodyCheckView.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckView.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckView.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckView~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckView.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckView.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/BodyCheckViewModel.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckViewModel.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckViewModel.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckViewModel~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckViewModel.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/BodyCheckViewModel.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/CameraPreviewView.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraPreviewView.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraPreviewView.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraPreviewView~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraPreviewView.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraPreviewView.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/CameraView.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraView.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraView.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraView~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraView.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraView.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/CameraViewModel.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraViewModel.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraViewModel.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraViewModel~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraViewModel.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/CameraViewModel.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/Camerapreview.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Camerapreview.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Camerapreview.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Camerapreview~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Camerapreview.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Camerapreview.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/ContentView.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ContentView.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ContentView.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ContentView~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ContentView.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ContentView.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/File.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/File.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/File.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/File~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/File.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/File.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/FlexibilityGameApp.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/FlexibilityGameApp.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/FlexibilityGameApp.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/FlexibilityGameApp~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/FlexibilityGameApp.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/FlexibilityGameApp.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/GamePose.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GamePose.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GamePose.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GamePose~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GamePose.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GamePose.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/GameRecord.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecord.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecord.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecord~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecord.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecord.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/GameRecordsManager.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecordsManager.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecordsManager.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecordsManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecordsManager.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameRecordsManager.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/GameView.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameView.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameView.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameView~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameView.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameView.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/GameViewModel.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameViewModel.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameViewModel.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameViewModel~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameViewModel.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/GameViewModel.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/HomeView.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeView.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeView.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeView~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeView.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeView.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/HomeViewModel.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeViewModel.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeViewModel.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeViewModel~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeViewModel.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/HomeViewModel.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/MyApp.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/MyApp.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/MyApp.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/MyApp~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/MyApp.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/MyApp.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/PoseCheckItem.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseCheckItem.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseCheckItem.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseCheckItem~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseCheckItem.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseCheckItem.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/PoseEstimator.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseEstimator.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseEstimator.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseEstimator~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseEstimator.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseEstimator.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/PoseTemplate.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseTemplate.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseTemplate.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseTemplate~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseTemplate.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/PoseTemplate.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/Posetemplaterepository.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Posetemplaterepository.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Posetemplaterepository.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Posetemplaterepository~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Posetemplaterepository.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Posetemplaterepository.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/RecordRow.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/RecordRow.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/RecordRow.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/RecordRow~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/RecordRow.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/RecordRow.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/ResultCard.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultCard.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultCard.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultCard~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultCard.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultCard.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/ResultsView.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultsView.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultsView.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultsView~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultsView.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/ResultsView.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/Resultview.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Resultview.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Resultview.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Resultview~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Resultview.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Resultview.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/Skeletonoverlayview.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Skeletonoverlayview.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Skeletonoverlayview.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Skeletonoverlayview~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Skeletonoverlayview.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/Skeletonoverlayview.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/StatBox.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/StatBox.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/StatBox.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/StatBox~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/StatBox.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/StatBox.dia"
+  },
+  "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/TimerBox.swift": {
+    "dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/TimerBox.d",
+    "object": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/TimerBox.swift.o",
+    "swiftmodule": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/TimerBox~partial.swiftmodule",
+    "swift-dependencies": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/TimerBox.swiftdeps",
+    "diagnostics": "/Users/aburakisakura/Desktop/FLEXIVE.swiftpm/.build/arm64-apple-macosx/debug/AppModule.build/TimerBox.dia"
+  }
+}

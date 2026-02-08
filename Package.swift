@@ -5,7 +5,7 @@
 // Do not edit it by hand because the contents will be replaced.
 
 import PackageDescription
-import AppleProductTypes
+//import AppleProductTypes
 
 let package = Package(
     name: "FLEXIVE",
@@ -13,32 +13,15 @@ let package = Package(
         .iOS("16.0")
     ],
     products: [
-        .iOSApplication(
+        .library(
             name: "FLEXIVE",
-            targets: ["AppModule"],
-            bundleIdentifier: "app.Aburaki.saku.FLEXIVE",
-            teamIdentifier: "2LKSAU9UD8",
-            displayVersion: "1.0",
-            bundleVersion: "1",
-            appIcon: .placeholder(icon: .twoPeople),
-            accentColor: .presetColor(.mint),
-            supportedDeviceFamilies: [
-                .pad,
-                .phone
-            ],
-            supportedInterfaceOrientations: [
-                .portrait,
-                .landscapeRight,
-                .landscapeLeft,
-                .portraitUpsideDown(.when(deviceFamilies: [.pad]))
-            ]
+            targets: ["AppModule"]
         )
     ],
     targets: [
-        .executableTarget(
+        .target(
             name: "AppModule",
             path: "."
         )
-    ],
-    swiftLanguageVersions: [.version("6")]
+    ]
 )
